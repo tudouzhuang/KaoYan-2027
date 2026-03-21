@@ -44,16 +44,6 @@ int GetTop(SqStack *S)
 	return S->data[S->top];
 }
 
-// 在这里写一个辅助函数用于判断左右括号,在函数体内写有点麻烦，直接模块化
-bool CheckHelp(char left,char right)
-{
-	return (left == '(' && right == ')') ||
-	(left == '[' && right == ']') ||
-	(left == '{' && right == '}');
-	// 精炼,如果匹配直接返回对应的True，因为并不需要区分
-}
-
-
 // 括号匹配（核心）
 bool bracketCheck(char str[]) {
 	SqStack S;
@@ -78,7 +68,9 @@ bool bracketCheck(char str[]) {
 			// 这里进行判空操作
 			int flag = GetTop(&S);
 			// 新建flag变量读取栈中值然后进行匹配
-			if(CheckHelp(flag,str[i]))
+			if((flag == '(' && str[i] == ')') ||
+			   (flag == '[' && str[i] == ']') ||
+			   (flag == '{' && str[i] == '}'))
 				Pop(&S,&flag);
 		}
 		else continue;
@@ -105,7 +97,6 @@ int evaluatePostfix(char exp[]) {
 		// [TODO] 1: 如果遇到数字字符 ('0' - '9')
 		// 提示：字符 '5' 怎么变成整数 5 ？ (exp[i] - '0')
 		// 你的代码写在这里...
-		
 		
 		// [TODO] 2: 如果遇到运算符 ('+', '-', '*', '/')
 		// 提示：连续Pop出 op2 和 op1 (注意顺序!)，计算后将结果 Push 入栈
